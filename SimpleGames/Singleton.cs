@@ -1,6 +1,5 @@
 ﻿using GameInterfaces;
 using GameGato;
-using System.Numerics;
 
 namespace Singleton
 {
@@ -39,11 +38,6 @@ namespace Singleton
             });
         }
 
-        public void AddGame(IGame game)
-        {
-            this._games.Add(game);
-        }
-
         public bool SetCurrentGame(int index)
         {
             if (index < 0 || index >= this._games.Count)
@@ -51,16 +45,28 @@ namespace Singleton
                 Console.WriteLine("Índice de juego no válido");
                 return false;
             }
+
             this.currentGame = this._games[index];
+            Console.WriteLine($"Juego seleccionado: {this.currentGame.Name}");
             return true;
         }
 
         public bool SelectCurrentGame()
         {
             Console.WriteLine("Selecciona el juego:");
-            int index = int.Parse(s: Console.ReadLine().Trim());
+            int index = int.Parse(s: Console.ReadLine().Trim()) - 1;
             var successes = this.SetCurrentGame(index);
             return successes;
+        }
+
+        public void PlayCurrentGame()
+        {
+            if (this.currentGame == null)
+            {
+                Console.WriteLine("No se ha seleccionado ningún juego");
+                return;
+            }
+            this.currentGame.Play();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace GameGato
 
         public void Play()
         {
-            Console.WriteLine("Jugando al Gato");
+            Console.WriteLine($"Jugando ahora {this.Name}");
         }
     }
 }
