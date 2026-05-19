@@ -1,6 +1,6 @@
 ﻿using GameInterfaces;
 
-namespace GameGato
+namespace Games
 {
     public class Gato : IGame
     {

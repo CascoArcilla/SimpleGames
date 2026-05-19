@@ -14,6 +14,7 @@ namespace Singleton
         {
             this._creatorGames = new List<Creator>();
             this._creatorGames.Add(new GatoCreator());
+            this._creatorGames.Add(new AdivinarCreator());
         }
 
         public static GameList GetGameList()

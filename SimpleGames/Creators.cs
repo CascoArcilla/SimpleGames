@@ -1,5 +1,5 @@
 ﻿using GameInterfaces;
-using GameGato;
+using Games;
 
 namespace Crators
 {
@@ -15,5 +15,11 @@ namespace Crators
         public override string Name => "Tik tak toe";
 
         public override IGame CreateGame() => new Gato();
+    }
+
+    public class AdivinarCreator : Creator
+    {
+        public override string Name => "Adivinar numero de simbolos";
+        public override IGame CreateGame() => new Adivinar();
     }
 }
