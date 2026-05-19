@@ -1,5 +1,5 @@
 ﻿using GameInterfaces;
-using GameGato;
+using Crators;
 
 namespace Singleton
 {
@@ -7,13 +7,13 @@ namespace Singleton
     public class GameList
     {
         private static GameList gameList;
-        private List<IGame> _games;
+        private List<Creator> _creatorGames;
         private IGame currentGame;
 
         private GameList()
         {
-            this._games = new List<IGame>();
-            this._games.Add(new Gato());
+            this._creatorGames = new List<Creator>();
+            this._creatorGames.Add(new GatoCreator());
         }
 
         public static GameList GetGameList()
@@ -27,26 +27,26 @@ namespace Singleton
 
         public void ShowListGame()
         {
-            if (this._games == null || this._games.Count == 0)
+            if (this._creatorGames == null || this._creatorGames.Count == 0)
             {
                 Console.WriteLine("No hay juegos disponibles");
                 return;
             }
-            this._games.ForEach(game =>
+            this._creatorGames.ForEach(creatorGame =>
             {
-                Console.WriteLine($"{this._games.IndexOf(game) + 1} {game.Name}");
+                Console.WriteLine($"{this._creatorGames.IndexOf(creatorGame) + 1} {creatorGame.Name}");
             });
         }
 
         public bool SetCurrentGame(int index)
         {
-            if (index < 0 || index >= this._games.Count)
+            if (index < 0 || index >= this._creatorGames.Count)
             {
                 Console.WriteLine("Índice de juego no válido");
                 return false;
             }
 
-            this.currentGame = this._games[index];
+            this.currentGame = this._creatorGames[index].CreateGame();
             Console.WriteLine($"Juego seleccionado: {this.currentGame.Name}");
             return true;
         }
