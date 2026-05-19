@@ -36,6 +36,15 @@ namespace GameGato
 
                 ControlInputPlayer();
 
+                _winner = CheckWinner();
+                if (_winner)
+                {
+                    Console.Clear();
+                    ShowBoard();
+                    Console.WriteLine($"¡¡¡Ganaste {_turn}!!!");
+                    break;
+                }
+
                 ChangeTurn();
                 _turnOne = false;
             }
@@ -80,6 +89,12 @@ namespace GameGato
                 return !isValid;
             }
 
+            if (_board[index] == _players[0] || _board[index] == _players[1])
+            {
+                Console.WriteLine("Posicion ya ocupada");
+                return !isValid;
+            }
+
             _board[index] = _turn;
 
             return isValid;
@@ -89,11 +104,35 @@ namespace GameGato
         {
             Console.WriteLine("Tablero actual\n");
 
-            Console.WriteLine($"| {_board[0]} | {_board[1]} | {_board[2]} |");
-            Console.WriteLine($"| {_board[3]} | {_board[4]} | {_board[5]} |");
-            Console.WriteLine($"| {_board[6]} | {_board[7]} | {_board[8]} |");
+            Console.WriteLine($"| '{_board[0]}' | '{_board[1]}' | '{_board[2]}' |");
+            Console.WriteLine($"| '{_board[3]}' | '{_board[4]}' | '{_board[5]}' |");
+            Console.WriteLine($"| '{_board[6]}' | '{_board[7]}' | '{_board[8]}' |");
 
             Console.WriteLine();
+        }
+
+        private bool CheckWinner()
+        {
+            // Verificar filas
+            for (int i = 0; i < 9; i += 3)
+            {
+                if (_board[i] == _board[i + 1] && _board[i + 1] == _board[i + 2])
+                    return true;
+            }
+
+            // Verificar columnas
+            for (int i = 0; i < 3; i++)
+            {
+                if (_board[i] == _board[i + 3] && _board[i + 3] == _board[i + 6])
+                    return true;
+            }
+
+            // Verificar diagonales
+            if (_board[0] == _board[4] && _board[4] == _board[8])
+                return true;
+            if (_board[2] == _board[4] && _board[4] == _board[6])
+                return true;
+            return false;
         }
     }
 }
