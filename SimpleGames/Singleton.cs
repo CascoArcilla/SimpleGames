@@ -32,6 +32,7 @@ namespace Singleton
                 Console.WriteLine("No hay juegos disponibles");
                 return;
             }
+            Console.WriteLine("Lista de juegos disponibles:");
             this._creatorGames.ForEach(creatorGame =>
             {
                 Console.WriteLine($"{this._creatorGames.IndexOf(creatorGame) + 1} {creatorGame.Name}");
@@ -53,9 +54,20 @@ namespace Singleton
 
         public bool SelectCurrentGame()
         {
+            bool successes = false;
             Console.WriteLine("Selecciona el juego:");
-            int index = int.Parse(s: Console.ReadLine().Trim()) - 1;
-            var successes = this.SetCurrentGame(index);
+
+            try
+            {
+                int index = int.Parse(s: Console.ReadLine().Trim()) - 1;
+                successes = this.SetCurrentGame(index);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Seleccion invalida, solo numeros.");
+                successes = false;
+            }
+
             return successes;
         }
 
