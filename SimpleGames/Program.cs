@@ -18,6 +18,8 @@ namespace GameMain
             }
             while (!selectGame);
 
+            Console.Clear();
+
             // Iniciar el juego seleccionado
             gameList.PlayCurrentGame();
             Console.WriteLine("Fin del juego, ejecute de nuevo para volver a seleccionar otra vez.");
