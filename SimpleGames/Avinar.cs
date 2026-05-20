@@ -9,6 +9,7 @@ namespace Games
         public void Play()
         {
             Console.WriteLine($"Jugando a {Name}");
+            Console.WriteLine("Se esta trabajando para desarrollar.");
         }
     }
 }

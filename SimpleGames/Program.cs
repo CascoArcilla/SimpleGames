@@ -22,7 +22,10 @@ namespace GameMain
 
             // Iniciar el juego seleccionado
             gameList.PlayCurrentGame();
-            Console.WriteLine("Fin del juego, ejecute de nuevo para volver a seleccionar otra vez.");
+            Console.WriteLine("\nFin del juego, ejecute de nuevo para volver a seleccionar otra vez.");
+            
+            Console.Write("\n\nPulse cualquier tecla para cerrar...");
+            Console.ReadKey(true);
         }
     }
 }
