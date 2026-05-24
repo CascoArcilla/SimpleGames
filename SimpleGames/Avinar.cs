@@ -1,4 +1,5 @@
 ﻿using GameInterfaces;
+using System.Numerics;
 
 namespace Games
 {
@@ -19,11 +20,12 @@ namespace Games
         public void Play()
         {
             Console.WriteLine($"Jugando a {Name}\n");
-            this.ShowSpace(false);
-            this.ShowMenu();
+            this.ShowSpace();
+            this.ShowInfo();
+            this.ReadValidateInput();
         }
 
-        private void ShowMenu()
+        private void ShowInfo()
         {
             Console.Write("Caracteres: ");
             foreach (var item in _characters)
@@ -32,27 +34,43 @@ namespace Games
             }
             Console.WriteLine();
 
-            Console.WriteLine("¿Caracter y numero de repeticiones?");
             Console.WriteLine("Estructura de respuesta: [caracter][espacio][numero]");
             Console.WriteLine("Ejm: A 4, C 6, B 2");
-
-            Console.Write("Ingrese respuesta: ");
-            string response = Console.ReadLine() ?? string.Empty;
-
-            var tupleResponse = this.ValidateResponse(response);
-
-            if (!tupleResponse.Item1)
-            {
-                Console.WriteLine("No valido");
-            }
-            else
-            {
-                Console.WriteLine("Valido");
-                Console.WriteLine(tupleResponse);
-            }
         }
 
-        private Tuple<bool, char, int> ValidateResponse(string response)
+        private bool ReadValidateInput()
+        {
+            Console.WriteLine("\nIntenta adivinar el numero de uno de los caracteres.");
+            Console.Write("Ingrese respuesta: ");
+            string input = Console.ReadLine() ?? string.Empty;
+
+            var (isValid, character, count) = ValidateInputText(input);
+
+            if (!isValid) {
+                Console.WriteLine("Entrada no valida");
+                return isValid;
+            }
+
+            var success = CheckCorrect(character, count);
+
+            return success;
+        }
+
+        private bool CheckCorrect(char character, int userCount)
+        {
+            bool success = true;
+
+            int count = 0;
+
+            foreach (char item in _space)
+            {
+                if (item == character) count++;
+            }
+
+            return count > 0 ? success : !success;
+        }
+
+        private Tuple<bool, char, int> ValidateInputText(string response)
         {
             var parts = response.Trim().Split(' ');
 
