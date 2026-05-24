@@ -19,9 +19,55 @@ namespace Games
         public void Play()
         {
             Console.WriteLine($"Jugando a {Name}\n");
+
+            int iterations;
+
+            do
+            {
+                Console.WriteLine("Numero de partida (minimo 1, maximo 6)");
+                Console.Write("Partidas: ");
+                try
+                {
+                    iterations = int.Parse(Console.ReadLine().Trim());
+                    if (iterations > 0 && iterations <= 6) break;
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine("Valor no valido, vuelva a intentar");
+                }
+            }
+            while (true);
+
+
+            for (int i = 0; i < iterations; i++)
+            {
+                Console.Clear();
+                Console.WriteLine("Adivina el caracter");
+                this.MainLogic();
+                Console.WriteLine($"\nRonda {i + 1} de {iterations}");
+                Console.WriteLine("Pulse cualquier tecla para cotinuar con la siguente ronda.");
+                Console.ReadKey(true);
+            }
+        }
+
+        private void MainLogic()
+        {
             this.ShowSpace();
             this.ShowInfo();
-            this.ReadValidateInput();
+
+            var validSuccess = this.ReadValidateInput();
+
+            if (validSuccess)
+            {
+                Console.WriteLine("¡¡¡Impresionante!!!, lo has logrado.");
+            }
+            else
+            {
+                Console.WriteLine("Uhhh, lastima, bueno realmente no somos videntes");
+            }
+
+            Console.WriteLine("Espacio revelado");
+            this.ShowSpace(true);
         }
 
         private void ShowInfo()
@@ -78,7 +124,7 @@ namespace Games
                 if (item == character) count++;
             }
 
-            return count > 0 ? success : !success;
+            return count == userCount ? success : !success;
         }
 
         private Tuple<bool, char, int, string> ValidateInputText(string response)
