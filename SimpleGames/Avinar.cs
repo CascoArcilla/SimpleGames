@@ -1,5 +1,4 @@
 ﻿using GameInterfaces;
-using System.Numerics;
 
 namespace Games
 {
@@ -34,29 +33,41 @@ namespace Games
             }
             Console.WriteLine();
 
-            Console.WriteLine("Estructura de respuesta: [caracter][espacio][numero]");
+            Console.WriteLine("Estructura de respuesta: [caracter(mayuscula)][espacio][numero]");
             Console.WriteLine("Ejm: A 4, C 6, B 2");
         }
 
         private bool ReadValidateInput()
         {
-            Console.WriteLine("\nIntenta adivinar el numero de uno de los caracteres.");
-            Console.Write("Ingrese respuesta: ");
-            string input = Console.ReadLine() ?? string.Empty;
+            string input;
+            bool isValid;
+            char character;
+            int count;
+            string message;
 
-            var (isValid, character, count) = ValidateInputText(input);
+            do
+            {
+                Console.WriteLine("\nIntenta adivinar el numero de uno de los caracteres.");
+                Console.Write("Ingrese respuesta: ");
+                input = Console.ReadLine() ?? string.Empty;
 
-            if (!isValid) {
-                Console.WriteLine("Entrada no valida");
-                return isValid;
+                (isValid, character, count, message) = ValidateInputText(input);
+
+                if (isValid)
+                {
+                    break;
+                }
+
+                Console.WriteLine($"Entrada no valida. {message}");
             }
+            while (true);
 
-            var success = CheckCorrect(character, count);
+            var success = CheckResponse(character, count);
 
             return success;
         }
 
-        private bool CheckCorrect(char character, int userCount)
+        private bool CheckResponse(char character, int userCount)
         {
             bool success = true;
 
@@ -70,18 +81,18 @@ namespace Games
             return count > 0 ? success : !success;
         }
 
-        private Tuple<bool, char, int> ValidateInputText(string response)
+        private Tuple<bool, char, int, string> ValidateInputText(string response)
         {
             var parts = response.Trim().Split(' ');
 
-            if (parts.Length != 2) return Tuple.Create(false, 'N', 0);
+            if (parts.Length != 2) return Tuple.Create(false, 'N', 0, "Su repuesta puede no tener espacio.");
 
             char character = parts[0][0];
 
-            if (!this._characters.Contains(character)) return Tuple.Create(false, 'N', 0);
-            if (!int.TryParse(parts[1], out int count)) return Tuple.Create(false, 'N', 0);
+            if (!this._characters.Contains(character)) return Tuple.Create(false, 'N', 0, "Su caracter no coincide con los disponibles.");
+            if (!int.TryParse(parts[1], out int count)) return Tuple.Create(false, 'N', 0, "Debe indicar un numero.");
 
-            return Tuple.Create(true, character, count);
+            return Tuple.Create(true, character, count, "Validacion de entrada exitosa.");
         }
 
         private void ShowSpace(bool show = false)
