@@ -25,6 +25,46 @@ namespace Games
         public void Play()
         {
             Console.WriteLine($"Jugando {this.Name} ahora");
+            this.ShowBoard();
+        }
+
+        private void ShowBoard()
+        {
+            // Imprimir cabecera
+            Console.WriteLine("    1   2   3   4");
+
+            string incognit = "?";
+            int checkIndex = 0;
+
+            foreach (Piece item in this.Pieces)
+            {
+                switch (checkIndex)
+                {
+                    case 0:
+                        Console.WriteLine("   --- --- --- ---");
+                        Console.Write("1 |");
+                        break;
+                    case 4:
+                        Console.WriteLine("\n   --- --- --- ---");
+                        Console.Write("2 |");
+                        break;
+                    case 8:
+                        Console.WriteLine("\n   --- --- --- ---");
+                        Console.Write("3 |");
+                        break;
+                    case 12:
+                        Console.WriteLine("\n   --- --- --- ---");
+                        Console.Write("4 |");
+                        break;
+                }
+
+                string show = item.Revealed ? item.Value : incognit;
+                Console.Write($" {show} |");
+
+                checkIndex++;
+            }
+
+            Console.WriteLine("\n   --- --- --- ---");
         }
     }
 
