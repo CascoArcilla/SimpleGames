@@ -7,7 +7,7 @@ namespace Games
     {
         public string Name => "Memorama";
 
-        private readonly string[] charactersValues = new string[] { "A", "B", "C", "D", "E", "F", "G", "H" };
+        private readonly string[] charactersValues = new string[] { "S", "D", "F", "H" };
         private List<Piece> Pieces;
 
         public Memorama() 
@@ -15,6 +15,8 @@ namespace Games
             List<Piece> piecesSorted = new List<Piece>();
             foreach (string item in this.charactersValues)
             {
+                piecesSorted.Add(new Piece(item));
+                piecesSorted.Add(new Piece(item));
                 piecesSorted.Add(new Piece(item));
                 piecesSorted.Add(new Piece(item));
             }
