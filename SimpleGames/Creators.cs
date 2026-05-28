@@ -22,4 +22,10 @@ namespace Crators
         public override string Name => "Adivinar numero de simbolos";
         public override IGame CreateGame() => new Adivinar();
     }
+
+    public class MemoramaCreator : Creator
+    {
+        public override string Name => "Memorama";
+        public override IGame CreateGame() => new Memorama();
+    }
 }
