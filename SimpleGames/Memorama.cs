@@ -11,8 +11,9 @@ namespace Games
         private List<Piece> _pieces;
         private Piece[,] _structurePieces;
 
-        private Piece _first;
-        private Piece _second;
+        // El caracter "?" se usa para permitir null en las piezas
+        private Piece? _first;
+        private Piece? _second;
         private string _message;
         private readonly int _dimension = 4;
         public Memorama()
@@ -48,8 +49,36 @@ namespace Games
         public void Play()
         {
             Console.WriteLine($"Jugando {this.Name} ahora\n");
-            this.ShowBoard();
-            this.ShowMenu();
+            bool finished = false;
+
+            do
+            {
+                this.ShowBoard();
+                this.ShowMenu();
+                this.ReadValidateInput();
+
+
+                Console.Clear();
+
+                (bool isMatch, string message) = this.CheckMatch();
+
+                if (message != "")
+                {
+                    this.ShowBoard();
+                    Console.WriteLine($"{message} Presione una tecla para continuar...");
+                    Console.ReadKey(true);
+
+                    if (!isMatch)
+                    {
+                        this._first?.Revealed = false;
+                        this._second?.Revealed = false;
+                    }
+
+                    this.NullPieces();
+                    Console.Clear();
+                }
+
+            } while (!finished);
         }
 
         private void ShowBoard()
@@ -82,7 +111,7 @@ namespace Games
                         break;
                 }
 
-                string show = !item.Revealed ? item.Value : incognit;
+                string show = item.Revealed ? item.Value : incognit;
                 Console.Write($" {show} |");
 
                 checkIndex++;
@@ -124,9 +153,9 @@ namespace Games
             }
             while (true);
 
-            var success = SetPieces(posX, posY);
+            SetPieces(posX, posY);
 
-            return success;
+            return isValid;
         }
 
         private Tuple<bool, int, int, string> ValidateInputText(string response)
@@ -134,18 +163,60 @@ namespace Games
             var parts = response.Trim().Split(' ');
 
             if (parts.Length != 2) return Tuple.Create(false, 0, 0, "Su repuesta puede no tener espacio");
+
             if (!int.TryParse(parts[0], out int px)) return Tuple.Create(false, 0, 0, "Las entradas deben ser numeros");
+
             if (!int.TryParse(parts[1], out int py)) return Tuple.Create(false, 0, 0, "Las entradas deben ser numeros");
+
             if (px < 1 || px > this._dimension || py < 1 || py > this._dimension) return Tuple.Create(false, 0, 0, "Una entrada esta fuera de rango");
+
+            if (this._structurePieces[py - 1, px - 1].Matched || this._structurePieces[py - 1, px - 1].Revealed) return Tuple.Create(false, 0, 0, "Casilla ya fue seleccionada");
 
             return Tuple.Create(true, px, py, "Validacion de entrada exitosa.");
         }
 
-        private bool SetPieces(int posX, int posY)
+        private Tuple<bool, string> CheckMatch()
         {
-            bool success = true;
+            if (this._first == null || this._second == null) return Tuple.Create(false, "");
 
-            return success;
+            bool match = true;
+            string message = "Bien, ve por otro.";
+
+            if (this._first.Value == this._second.Value)
+            {
+                this._first.Matched = true;
+                this._second.Matched = true;
+            }
+            else
+            {
+                message = "Mal intento, pruebe de nuevo.";
+                match = false;
+            }
+
+            return Tuple.Create(match, message);
+        }
+
+        private void SetPieces(int posX, int posY)
+        {
+            if (this._first == null)
+            {
+                this._first = this._structurePieces[posY - 1, posX - 1];
+                this._first.Revealed = true;
+                return;
+            }
+
+            if (this._second == null)
+            {
+                this._second = this._structurePieces[posY - 1, posX - 1];
+                this._second.Revealed = true;
+                return;
+            }
+        }
+
+        private void NullPieces()
+        {
+            this._first = null;
+            this._second = null;
         }
     }
 
@@ -153,11 +224,13 @@ namespace Games
     {
         public string Value { get; set; }
         public bool Revealed { get; set; }
+        public bool Matched { get; set; }
 
         public Piece(string value)
         {
             this.Value = value;
             this.Revealed = false;
+            this.Matched = false;
         }
     }
 
