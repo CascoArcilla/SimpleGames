@@ -80,6 +80,7 @@ namespace Games
             } while (!finished);
         }
 
+        // Muestra el tablero con las piezas reveladas o no dependiendo de su estado
         private void ShowBoard()
         {
             // Imprimir cabecera
@@ -90,6 +91,7 @@ namespace Games
 
             foreach (Piece item in this._structurePieces)
             {
+                // Imprimir separadores y numeros de fila
                 switch (checkIndex)
                 {
                     case 0:
@@ -110,6 +112,7 @@ namespace Games
                         break;
                 }
 
+                // Mostrar el valor de la pieza o el incognito dependiendo de su estado
                 string show = item.Revealed ? item.Value : incognit;
                 Console.Write($" {show} |");
 
@@ -119,6 +122,7 @@ namespace Games
             Console.WriteLine("\n   --- --- --- ---");
         }
 
+        // Muestra instrucciones sobre el input para las piezas
         private void ShowMenu()
         {
             Console.WriteLine("Se ingresa primero una casila y despues la siguiente.");
@@ -129,6 +133,7 @@ namespace Games
             if (this._second != null) Console.WriteLine($"Segunda casilla: {this._second.Value}");
         }
 
+        // Lee el input del usuario y valida que sea correcto, si es correcto se asignan las piezas seleccionadas
         private bool ReadValidateInput()
         {
             string input;
@@ -155,6 +160,7 @@ namespace Games
             return isValid;
         }
 
+        // Valida el formato un string de entrada asi como la validez de las coordenadas
         private Tuple<bool, int, int, string> ValidateInputText(string response)
         {
             var parts = response.Trim().Split(' ');
@@ -172,6 +178,7 @@ namespace Games
             return Tuple.Create(true, px, py, "Validacion de entrada exitosa.");
         }
 
+        // Comprueba si las piezas seleccionadas son iguales, si lo son se marcan como emparejadas, si no se ocultan de nuevo
         private Tuple<bool, string> CheckMatch()
         {
             if (this._first == null || this._second == null) return Tuple.Create(false, "");
@@ -193,6 +200,7 @@ namespace Games
             return Tuple.Create(match, message);
         }
 
+        // Asigna las piezas seleccionadas a las variables de pieza 1 y pieza 2 dependiendo de su estado
         private void SetPieces(int posX, int posY)
         {
             if (this._first == null)
