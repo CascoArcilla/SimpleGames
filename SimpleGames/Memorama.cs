@@ -53,6 +53,9 @@ namespace Games
             do
             {
                 this.ShowBoard();
+
+                if (this.CheckFinished()) break;
+
                 this.ShowMenu();
                 this.ReadValidateInput();
 
@@ -78,6 +81,9 @@ namespace Games
                 }
 
             } while (!finished);
+
+            Console.WriteLine("\nGenial, has terminado la partida.");
+            Console.WriteLine("Aqui no puedes perder, tu intentos son ilimiatados.");
         }
 
         // Muestra el tablero con las piezas reveladas o no dependiendo de su estado
@@ -222,6 +228,15 @@ namespace Games
         {
             this._first = null;
             this._second = null;
+        }
+
+        private bool CheckFinished()
+        {
+            foreach (Piece item in this._structurePieces)
+            {
+                if (!item.Matched) return false;
+            }
+            return true;
         }
     }
 
