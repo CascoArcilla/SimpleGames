@@ -14,7 +14,6 @@ namespace Games
         // El caracter "?" se usa para permitir null en las piezas
         private Piece? _first;
         private Piece? _second;
-        private string _message;
         private readonly int _dimension = 4;
         public Memorama()
         {
@@ -65,7 +64,7 @@ namespace Games
                 if (message != "")
                 {
                     this.ShowBoard();
-                    Console.WriteLine($"{message} Presione una tecla para continuar...");
+                    Console.Write($"{message}\nPresione una tecla para continuar...");
                     Console.ReadKey(true);
 
                     if (!isMatch)
@@ -128,7 +127,6 @@ namespace Games
 
             if (this._first != null) Console.WriteLine($"Primera casilla: {this._first.Value}");
             if (this._second != null) Console.WriteLine($"Segunda casilla: {this._second.Value}");
-            if (this._message != null || this._message != "") Console.WriteLine(this._message);
         }
 
         private bool ReadValidateInput()
@@ -141,8 +139,7 @@ namespace Games
 
             do
             {
-                Console.WriteLine("Intenta adivinar el numero de uno de los caracteres.");
-                Console.Write("Ingrese respuesta: ");
+                Console.Write("\nIngrese respuesta: ");
                 input = Console.ReadLine() ?? string.Empty;
 
                 (isValid, posX, posY, message) = ValidateInputText(input);
